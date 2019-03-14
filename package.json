@@ -4,9 +4,13 @@
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.9",
+    "@emotion/styled": "^10.0.9",
+    "emotion": "^10.0.9",
+    "emotion-theming": "^10.0.9",
     "lodash": "^4.17.11",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-emotion": "^10.0.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.8",
     "superagent": "^4.1.0"
