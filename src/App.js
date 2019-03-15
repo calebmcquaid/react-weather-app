@@ -1,9 +1,6 @@
 import React from "react";
 import WeatherData from "./components/WeatherData";
-import Titles from "./components/Titles";
 import Form from "./components/Form";
-import { jsx, css } from "@emotion/core";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Background from "./components/Background";
 import { ThemeProvider } from "emotion-theming";
 import Button from "./components/Button";
@@ -11,13 +8,13 @@ import Button from "./components/Button";
 const lightTheme = {
   skyColor: "#37d8e6",
   buttonObjectColor: "#ffdd00",
-  buttonObjectBorderColor: "#f1c40f"
+  buttonObjectBorderColor: "#2c3e50"
 };
 
 const darkTheme = {
   skyColor: "#2c3e50",
   buttonObjectColor: "#bdc3c7",
-  buttonObjectBorderColor: "#eaeff2"
+  buttonObjectBorderColor: "#37d8e6"
 };
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
@@ -30,6 +27,7 @@ class App extends React.Component {
     humidity: undefined,
     description: undefined,
     error: undefined,
+    icon: undefined,
     isLoaded: false,
     isLight: true,
     theme: lightTheme
@@ -59,6 +57,8 @@ class App extends React.Component {
         country: data.sys.country,
         humidity: data.main.humidity,
         description: data.weather[0].description,
+        icon:
+          "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png",
         error: "",
         isLoaded: true
       });
@@ -69,6 +69,7 @@ class App extends React.Component {
         country: undefined,
         humidity: undefined,
         description: undefined,
+        icon: undefined,
         error: "There was an error!"
       });
     }
@@ -88,22 +89,28 @@ class App extends React.Component {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "white"
+            backgroundColor: "white",
+            borderRadius: 5,
+            boxShadow: " 0px 0px 20px rgba(0,0,0,0.5)"
           }}
         >
-          <WeatherData
-            city={this.state.city}
-            country={this.state.country}
-            temperature={this.state.temperature}
-            humidity={this.state.humidity}
-            description={this.state.description}
-            error={this.state.error}
-          />
+          <div style={{ display: "flex" }}>
+            <WeatherData
+              city={this.state.city}
+              country={this.state.country}
+              temperature={this.state.temperature}
+              humidity={this.state.humidity}
+              description={this.state.description}
+              icon={this.state.icon}
+              error={this.state.error}
+            />
+          </div>
         </div>
       );
     } else {
       div = <div />;
     }
+
     return (
       <ThemeProvider
         style={{ backgroundSize: "cover", height: "100%" }}
@@ -128,35 +135,19 @@ class App extends React.Component {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "white",
-                margin: 20
+                background: this.state.theme.buttonObjectBorderColor,
+                margin: 20,
+                borderRadius: 5,
+                boxShadow: " 0px 0px 20px rgba(0,0,0,0.5)"
               }}
             >
-              <Titles />
-
+              <h1 style={{ color: this.state.theme.skyColor }}>
+                Get Your Weather
+              </h1>
               <Form getWeather={this.getWeather} />
               <Button onClick={() => this.handleClick()}>MODE</Button>
             </div>
-            {/* <div
-          style={{
-            width: 600,
-            height: 300,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "white"
-          }}
-        >
-          <WeatherData
-            city={this.state.city}
-            country={this.state.country}
-            temperature={this.state.temperature}
-            humidity={this.state.humidity}
-            description={this.state.description}
-            error={this.state.error}
-          />
-        </div> */}
+
             {div}
           </div>
         </Background>
